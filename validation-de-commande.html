@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Paiement Sécurisé | UV-PRO</title>
+    <link rel="stylesheet" href="style.css"> <style>
+        .pay-container {
+            max-width: 500px;
+            margin: 100px auto;
+            padding: 30px;
+            background: #161625;
+            border-radius: 15px;
+            text-align: center;
+            border: 1px solid #a855f7;
+            color: white;
+        }
+        .price {
+            font-size: 2em;
+            color: #a855f7;
+            margin: 20px 0;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="pay-container">
+        <h2>Finaliser votre commande</h2>
+        <p>Lampe UV Pro-Tech (Édition Limitée)</p>
+        <div class="price">13,73 €</div>
+
+        <div id="paypal-button-container"></div>
+    </div>
+
+    <script src="https://www.paypal.com/sdk/js?client-id=sb&currency=EUR"></script>
+    <script>
+        paypal.Buttons({
+            createOrder: function(data, actions) {
+                return actions.order.create({
+                    purchase_units: [{
+                        amount: { value: '13.73' }
+                    }]
+                });
+            },
+            onApprove: function(data, actions) {
+                return actions.order.capture().then(function(details) {
+                    alert('Transaction réussie ! Merci ' + details.payer.name.given_name);
+                    window.location.href = "validation-de-commande.html";
+                });
+            }
+        }).render('#paypal-button-container');
+    </script>
+</body>
+</html>
