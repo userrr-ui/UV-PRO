@@ -4,48 +4,129 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Paiement Sécurisé | UV-PRO</title>
-    <link rel="stylesheet" href="style.css"> <style>
-        .pay-container {
-            max-width: 500px;
-            margin: 100px auto;
-            padding: 30px;
-            background: #161625;
-            border-radius: 15px;
-            text-align: center;
-            border: 1px solid #a855f7;
-            color: white;
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        :root {
+            --uv-purple: #a855f7;
+            --dark-bg: #0f0f1a;
+            --card-bg: #161625;
+            --border-color: #2a2a40;
         }
+
+        body {
+            background-color: var(--dark-bg);
+            background-image: radial-gradient(circle at top right, #1e1e3a, var(--dark-bg));
+            color: white;
+            font-family: 'Segoe UI', sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+        }
+
+        .pay-container {
+            width: 100%;
+            max-width: 450px;
+            padding: 40px;
+            background: var(--card-bg);
+            border-radius: 20px;
+            text-align: center;
+            border: 1px solid var(--border-color);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5), 0 0 20px rgba(168, 85, 247, 0.1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        /* Petite lueur violette en haut */
+        .pay-container::before {
+            content: "";
+            position: absolute;
+            top: 0; left: 0; right: 0; height: 3px;
+            background: linear-gradient(90deg, transparent, var(--uv-purple), transparent);
+        }
+
+        h2 { 
+            font-size: 1.8em; 
+            margin-bottom: 10px;
+            letter-spacing: 1px;
+        }
+
+        .product-box {
+            background: rgba(255, 255, 255, 0.03);
+            padding: 15px;
+            border-radius: 12px;
+            margin-bottom: 25px;
+            border: 1px dashed #444;
+        }
+
+        .product-name { color: #aaa; font-size: 0.9em; margin: 0; }
+
         .price {
-            font-size: 2em;
-            color: #a855f7;
-            margin: 20px 0;
+            font-size: 2.8em;
+            color: var(--uv-purple);
+            font-weight: 800;
+            margin: 10px 0;
+            text-shadow: 0 0 15px rgba(168, 85, 247, 0.4);
+        }
+
+        .secure-badge {
+            font-size: 0.8em;
+            color: #28a745;
+            margin-bottom: 30px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        /* Style pour PayPal container */
+        #paypal-button-container {
+            margin-top: 20px;
+            min-height: 150px;
+        }
+
+        .footer-text {
+            margin-top: 25px;
+            font-size: 0.75em;
+            color: #666;
         }
     </style>
 </head>
 <body>
 
     <div class="pay-container">
-        <h2>Finaliser votre commande</h2>
-        <p>Lampe UV Pro-Tech (Édition Limitée)</p>
-        <div class="price">13,73 €</div>
+        <div class="secure-badge">
+            <i class="fas fa-shield-alt"></i> PAIEMENT 100% SÉCURISÉ
+        </div>
+        
+        <h2>Finaliser la commande</h2>
+        
+        <div class="product-box">
+            <p class="product-name">Lampe UV Pro-Tech (Édition Limitée)</p>
+            <div class="price">13,73 €</div>
+        </div>
 
         <div id="paypal-button-container"></div>
+
+        <p class="footer-text">
+            <i class="fas fa-lock"></i> Cryptage SSL 256-bits. <br>
+            Aucune donnée bancaire n'est stockée sur nos serveurs.
+        </p>
     </div>
 
     <script src="https://www.paypal.com/sdk/js?client-id=sb&currency=EUR"></script>
     <script>
         paypal.Buttons({
+            style: {
+                layout: 'vertical',
+                color:  'blue', // On met en bleu pour que ça ressorte mieux sur le noir
+                shape:  'rect',
+                label:  'pay'
+            },
             createOrder: function(data, actions) {
                 return actions.order.create({
-                    purchase_units: [{
-                        amount: { value: '13.73' }
-                    }]
-                });
-            },
-            onApprove: function(data, actions) {
-                return actions.order.capture().then(function(details) {
-                    alert('Transaction réussie ! Merci ' + details.payer.name.given_name);
-                    window.location.href = "validation-de-commande.html";
+                    purchase_units: [{ amount: { value: '13.73' } }]
                 });
             }
         }).render('#paypal-button-container');
