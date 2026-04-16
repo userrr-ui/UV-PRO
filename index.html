@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>UV-Tech | Boutique Officielle</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        :root {
+            --uv-purple: #a855f7;
+            --dark-bg: #0f0f1a;
+            --card-bg: #161625;
+            --nav-bg: #0a0a12;
+            --border-color: #2a2a40;
+        }
+
+        body {
+            background-color: var(--dark-bg);
+            color: white;
+            font-family: 'Segoe UI', sans-serif;
+            margin: 0;
+            padding: 0; /* Suppression du padding-top car géré par la nav */
+        }
+
+        /* --- BARRE DE NAVIGATION SYNCHRONISÉE --- */
+        nav {
+            background-color: var(--nav-bg);
+            height: 60px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 40px;
+            border-bottom: 1px solid var(--border-color);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            box-sizing: border-box;
+        }
+
+        .logo {
+            color: white;
+            font-weight: bold;
+            font-size: 1.4rem;
+            text-decoration: none;
+            letter-spacing: 1px;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 30px;
+            align-items: center;
+        }
+
+        .nav-links a {
+            color: white;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 0.95rem;
+            transition: color 0.2s;
+        }
+
+        .nav-links a:hover {
+            color: var(--uv-purple);
+        }
+
+        /* Badge panier identique à la page panier */
+        .cart-wrapper {
+            position: relative;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        #nav-cart-count {
+            background: var(--uv-purple);
+            color: white;
+            font-size: 0.7rem;
+            padding: 2px 6px;
+            border-radius: 10px;
+            position: absolute;
+            top: -8px;
+            left: 12px;
+            font-weight: bold;
+            box-shadow: 0 0 10px rgba(168, 85, 247, 0.4);
+        }
+
+        /* --- RESTE DU CONTENU --- */
+        .product-container {
+            display: flex;
+            max-width: 1100px;
+            margin: 40px auto;
+            gap: 50px;
+            padding: 20px;
+        }
+
+        .product-image img {
+            width: 100%;
+            max-width: 500px;
+            border-radius: 15px;
+            box-shadow: 0 0 20px rgba(168, 85, 247, 0.3);
+        }
+
+        .product-info { flex: 1; }
+        
+        .price {
+            font-size: 2rem;
+            color: var(--uv-purple);
+            font-weight: bold;
+            margin: 20px 0;
+        }
+
+        .btn-cart {
+            background: var(--uv-purple);
+            color: white;
+            border: none;
+            padding: 15px 40px;
+            border-radius: 8px;
+            font-weight: bold;
+            cursor: pointer;
+            width: 100%;
+            font-size: 1.1rem;
+            transition: 0.3s;
+        }
+
+        .btn-cart:hover { opacity: 0.9; transform: translateY(-2px); }
+
+        .reviews-section {
+            max-width: 800px;
+            margin: 80px auto;
+            padding: 20px;
+            border-top: 1px solid var(--border-color);
+        }
+
+        .comment-form {
+            background: var(--card-bg);
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 30px;
+        }
+
+        textarea {
+            width: 100%;
+            background: #0b0b15;
+            border: 1px solid var(--border-color);
+            color: white;
+            padding: 10px;
+            border-radius: 5px;
+            box-sizing: border-box;
+            outline: none;
+        }
+
+        .review-card {
+            background: var(--card-bg);
+            padding: 15px;
+            border-left: 4px solid var(--uv-purple);
+            margin-bottom: 15px;
+        }
+    </style>
+</head>
+<body>
+
+    <nav>
+        <a href="index.html" class="logo">UV-PRO</a>
+        
+        <div class="nav-links">
+            <a href="compte.html"><i class="fas fa-user"></i> Compte</a>
+            <a href="panier.html">
+                <div class="cart-wrapper">
+                    <i class="fas fa-shopping-basket"></i>
+                    <span id="nav-cart-count">1</span>
+                    <span>Panier</span>
+                </div>
+            </a>
+        </div>
+    </nav>
+
+    <main class="product-container">
+        <div class="product-image">
+            <img src="lampe UV.jpg" alt="Ma Lampe UV Professionnelle">
+        </div>
+
+        <div class="product-info">
+            <h1>Lampe UV de Poche 2 en 1</h1>
+            <p>Indispensable pour vérifier l'authenticité des billets, détecter les taches invisibles ou observer les scorpions en pleine nuit. Un outil puissant et compact.</p>
+            
+            <div class="price">14,95 €</div>
+
+            <button class="btn-cart" onclick="window.location.href='panier.html'">
+                AJOUTER AU PANIER
+            </button>
+        </div>
+    </main>
+
+    <section style="max-width: 1100px; margin: 0 auto; padding: 40px 20px;">
+        <h2 style="color: var(--uv-purple); border-bottom: 1px solid var(--border-color); padding-bottom: 10px;">Description détaillée</h2>
+        
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 30px; margin-top: 20px;">
+            <div>
+                <h3>Pourquoi choisir notre lampe ?</h3>
+                <p style="color: #ccc; line-height: 1.6;">
+                    Notre lampe UV de haute précision utilise une longueur d'onde optimisée pour révéler ce qui est invisible à l'œil nu. 
+                </p>
+            </div>
+            
+            <div style="background: var(--card-bg); padding: 20px; border-radius: 10px;">
+                <h3 style="margin-top: 0;">Fiche Technique</h3>
+                <ul style="list-style: none; padding: 0; color: #ccc;">
+                    <li style="margin-bottom: 10px;">⚡ <strong>Puissance :</strong> 5W haute intensité</li>
+                    <li style="margin-bottom: 10px;">🔍 <strong>Usage :</strong> Billets, hygiène, minéraux</li>
+                    <li style="margin-bottom: 10px;">🛡️ <strong>Matériau :</strong> Alliage d'aluminium</li>
+                </ul>
+            </div>
+        </div>
+    </section>
+
+    <section class="reviews-section">
+        <h3>Avis de nos clients</h3>
+        <div class="comment-form">
+            <p>Laissez un avis :</p>
+            <textarea id="userComment" rows="3" placeholder="Votre commentaire..."></textarea>
+            <button class="btn-cart" style="margin-top:10px; width:auto;" onclick="addComment()">Publier</button>
+        </div>
+        <div id="commentsList">
+            <div class="review-card">
+                <strong>Jean Dupont</strong>
+                <p>Super efficace pour nettoyer ma salle de bain !</p>
+            </div>
+        </div>
+    </section>
+
+    <script>
+        function addComment() {
+            const commentText = document.getElementById('userComment').value;
+            if(commentText.trim() !== "") {
+                const list = document.getElementById('commentsList');
+                const newComment = document.createElement('div');
+                newComment.className = 'review-card';
+                newComment.innerHTML = `<strong>Visiteur</strong><p>${commentText}</p>`;
+                list.prepend(newComment);
+                document.getElementById('userComment').value = "";
+            }
+        }
+    </script>
+</body>
+</html>

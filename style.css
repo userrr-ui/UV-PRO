@@ -1,0 +1,35 @@
+/* Modifie ces parties dans ton <style> */
+
+.form-group {
+    display: flex;
+    align-items: center;
+    margin-bottom: 15px;
+    width: 100%; /* S'assure que la ligne prend toute la largeur */
+}
+
+.form-group label {
+    width: 200px;
+    min-width: 200px; /* Empêche le label de rétrécir */
+    text-align: right;
+    margin-right: 20px;
+    font-size: 0.95rem;
+    color: #ccc;
+}
+
+.input-wrapper {
+    flex: 1; /* C'est la clé : l'input prend tout l'espace RESTANT uniquement */
+}
+
+input[type="text"],
+input[type="email"],
+input[type="password"],
+input[type="tel"],
+select {
+    width: 100%; /* Prend 100% de l'espace resté dans .input-wrapper */
+    padding: 12px;
+    background-color: var(--input-bg);
+    border: 1px solid #2a2a40;
+    border-radius: 5px;
+    color: white;
+    box-sizing: border-box; /* Très important pour que le padding ne fasse pas déborder */
+}
