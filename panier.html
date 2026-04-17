@@ -255,7 +255,7 @@
             <div style="margin-bottom:20px; color: white;">
                 Sous-total (<span id="qty-summary">1</span> article) : <strong id="subtotal-right">13,73 €</strong>
             </div>
-            <a href="paiement.html?total=13.73" id="btn-final-checkout" class="btn-checkout">Valider la commande</a>
+            <a href="validation-de-commande.html" id="btn-final-checkout" class="btn-checkout">Valider la commande</a>
         </div>
     </div>
 </div>
@@ -280,7 +280,7 @@
 
         // MISE À JOUR DU LIEN DE PAIEMENT
         // On change le lien pour qu'il contienne le nouveau prix total
-        document.getElementById('btn-final-checkout').href = "paiement.html?total=" + newTotal;
+        document.getElementById('btn-final-checkout').href = "validation-de-commande.html?total=" + newTotal;
     }
 </script>
 
