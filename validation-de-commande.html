@@ -33,34 +33,30 @@
             border-radius: 20px;
             text-align: center;
             border: 1px solid var(--border-color);
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5), 0 0 20px rgba(168, 85, 247, 0.1);
-            position: relative;
-            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
         }
 
-        /* Petite lueur violette en haut */
-        .pay-container::before {
-            content: "";
-            position: absolute;
-            top: 0; left: 0; right: 0; height: 3px;
-            background: linear-gradient(90deg, transparent, var(--uv-purple), transparent);
-        }
-
-        h2 { 
-            font-size: 1.8em; 
-            margin-bottom: 10px;
+        .secure-badge {
+            font-size: 0.8em;
+            color: #28a745;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            text-transform: uppercase;
             letter-spacing: 1px;
         }
 
+        h2 { font-size: 1.8em; margin-bottom: 10px; }
+
         .product-box {
             background: rgba(255, 255, 255, 0.03);
-            padding: 15px;
+            padding: 20px;
             border-radius: 12px;
             margin-bottom: 25px;
             border: 1px dashed #444;
         }
-
-        .product-name { color: #aaa; font-size: 0.9em; margin: 0; }
 
         .price {
             font-size: 2.8em;
@@ -70,21 +66,7 @@
             text-shadow: 0 0 15px rgba(168, 85, 247, 0.4);
         }
 
-        .secure-badge {
-            font-size: 0.8em;
-            color: #28a745;
-            margin-bottom: 30px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 8px;
-        }
-
-        /* Style pour PayPal container */
-        #paypal-button-container {
-            margin-top: 20px;
-            min-height: 150px;
-        }
+        #paypal-button-container { margin-top: 20px; }
 
         .footer-text {
             margin-top: 25px;
@@ -97,36 +79,51 @@
 
     <div class="pay-container">
         <div class="secure-badge">
-            <i class="fas fa-shield-alt"></i> PAIEMENT 100% SÉCURISÉ
+            <i class="fas fa-shield-alt"></i> Paiement 100% Sécurisé
         </div>
         
         <h2>Finaliser la commande</h2>
         
         <div class="product-box">
-            <p class="product-name">Lampe UV Pro-Tech (Édition Limitée)</p>
-            <div class="price">13,73 €</div>
+            <p style="color: #aaa; margin: 0;">Total de votre panier</p>
+            <div class="price" id="display-price">13,73 €</div>
         </div>
 
         <div id="paypal-button-container"></div>
 
         <p class="footer-text">
-            <i class="fas fa-lock"></i> Cryptage SSL 256-bits. <br>
-            Aucune donnée bancaire n'est stockée sur nos serveurs.
+            <i class="fas fa-lock"></i> Cryptage SSL 256-bits.
         </p>
     </div>
 
     <script src="https://www.paypal.com/sdk/js?client-id=sb&currency=EUR"></script>
     <script>
+        // 1. RÉCUPÉRER LE PRIX DEPUIS LE PANIER
+        const urlParams = new URLSearchParams(window.location.search);
+        let montantTotal = urlParams.get('total') || '13.73'; // 13.73 par défaut
+
+        // 2. AFFICHER LE BON PRIX SUR LA PAGE
+        document.getElementById('display-price').innerText = montantTotal.replace('.', ',') + " €";
+
+        // 3. CONFIGURER PAYPAL
         paypal.Buttons({
             style: {
                 layout: 'vertical',
-                color:  'blue', // On met en bleu pour que ça ressorte mieux sur le noir
+                color:  'blue',
                 shape:  'rect',
                 label:  'pay'
             },
             createOrder: function(data, actions) {
                 return actions.order.create({
-                    purchase_units: [{ amount: { value: '13.73' } }]
+                    purchase_units: [{
+                        amount: { value: montantTotal } // Le montant dynamique est ici !
+                    }]
+                });
+            },
+            onApprove: function(data, actions) {
+                return actions.order.capture().then(function(details) {
+                    alert('Merci pour votre achat, ' + details.payer.name.given_name + ' !');
+                    window.location.href = "index.html"; // Redirection après achat
                 });
             }
         }).render('#paypal-button-container');

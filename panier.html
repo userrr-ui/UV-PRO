@@ -176,7 +176,6 @@
             top: 80px;
         }
 
-        /* MODIFICATION : Ajout du style pour le bouton version lien */
         .btn-checkout {
             display: block;
             width: 100%;
@@ -191,6 +190,12 @@
             text-decoration: none;
             text-align: center;
             box-sizing: border-box;
+            transition: 0.3s;
+        }
+        
+        .btn-checkout:hover {
+            filter: brightness(1.1);
+            box-shadow: 0 0 15px rgba(40, 167, 69, 0.4);
         }
     </style>
 </head>
@@ -250,7 +255,7 @@
             <div style="margin-bottom:20px; color: white;">
                 Sous-total (<span id="qty-summary">1</span> article) : <strong id="subtotal-right">13,73 €</strong>
             </div>
-            <a href="validation-de-commande.html" class="btn-checkout">Valider la commande</a>
+            <a href="paiement.html?total=13.73" id="btn-final-checkout" class="btn-checkout">Valider la commande</a>
         </div>
     </div>
 </div>
@@ -272,6 +277,10 @@
 
         document.getElementById('total-price').innerText = formattedTotal;
         document.getElementById('subtotal-right').innerText = formattedTotal;
+
+        // MISE À JOUR DU LIEN DE PAIEMENT
+        // On change le lien pour qu'il contienne le nouveau prix total
+        document.getElementById('btn-final-checkout').href = "paiement.html?total=" + newTotal;
     }
 </script>
 
