@@ -197,7 +197,7 @@
         <div class="auth-container">
             <div class="auth-card">
                 <h2>Connexion</h2>
-                <form action="login_process.php" method="POST">
+                <form action="https://uv-pro-back.onrender.com/connexion.php" method="POST">
                     <div class="form-group">
                         <label>Adresse email</label>
                         <input type="email" name="email" required>
@@ -225,18 +225,16 @@
 
             <div class="auth-card">
                 <h2>Nouveau client</h2>
-                <form action="register_process.php" method="POST">
-                    <div class="form-group">
-                        <label>Adresse email</label>
-                        <input type="email" name="email" required>
-                    </div>
-                    <p style="font-size: 0.8rem; color: #888;">
-                        En créant un compte, vous pourrez suivre vos commandes de lampe UV et gérer vos informations.
-                    </p>
-                    <a href="formulaire-inscription.html">
-                        <button type="button" class="btn-auth">Créer un compte</button>
-                    </a>
-                </form>
+                <div class="form-group">
+    <label>Adresse email</label>
+    <input type="email" name="email">
+</div>
+<p style="font-size: 0.8rem; color: #888;">
+    En créant un compte, vous pourrez suivre vos commandes de lampe UV et gérer vos informations.
+</p>
+<a href="formulaire-inscription.html">
+    <button type="button" class="btn-auth">Créer un compte</button>
+</a>
             </div>
         </div>
     </div>
