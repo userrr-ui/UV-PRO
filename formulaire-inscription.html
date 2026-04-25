@@ -6,11 +6,7 @@
     <title>Création de compte détaillé | UV-PRO</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
-        /* CORRECTIF : Force tous les éléments à rester dans leur boîte */
-        * {
-            box-sizing: border-box;
-        }
-
+        * { box-sizing: border-box; }
         :root {
             --uv-purple: #a855f7;
             --dark-bg: #0f0f1a;
@@ -19,198 +15,55 @@
             --text-color: #e0e0e0;
             --success-green: #28a745;
         }
-
         body {
             background-color: var(--dark-bg);
             color: var(--text-color);
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            margin: 0;
-            padding: 20px;
-            display: flex;
-            justify-content: center;
-            overflow-x: hidden; /* Empêche le défilement horizontal */
+            margin: 0; padding: 20px; display: flex; justify-content: center; overflow-x: hidden;
         }
-
         .container {
-            width: 100%;
-            max-width: 800px;
-            background: var(--card-bg);
-            padding: 40px;
-            border-radius: 15px;
-            border: 1px solid #2a2a40;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+            width: 100%; max-width: 800px; background: var(--card-bg); padding: 40px;
+            border-radius: 15px; border: 1px solid #2a2a40; box-shadow: 0 10px 30px rgba(0,0,0,0.5);
         }
-
         h1.main-title {
-            color: white;
-            border-bottom: 2px solid var(--uv-purple);
-            padding-bottom: 15px;
-            margin-bottom: 30px;
-            font-size: 1.8rem;
+            color: white; border-bottom: 2px solid var(--uv-purple);
+            padding-bottom: 15px; margin-bottom: 30px; font-size: 1.8rem;
         }
-
-        .required-note {
-            font-size: 0.9rem;
-            color: #888;
-            margin-bottom: 20px;
-        }
-
-        fieldset {
-            border: none;
-            margin: 0;
-            padding: 0;
-            margin-bottom: 30px;
-            width: 100%;
-        }
-
+        .required-note { font-size: 0.9rem; color: #888; margin-bottom: 20px; }
+        fieldset { border: none; margin: 0 0 30px 0; padding: 0; width: 100%; }
         legend {
-            color: var(--uv-purple);
-            font-size: 1.3rem;
-            font-weight: bold;
-            margin-bottom: 20px;
-            display: block;
-            width: 100%;
-            border-bottom: 1px solid #2a2a40;
-            padding-bottom: 10px;
+            color: var(--uv-purple); font-size: 1.3rem; font-weight: bold; margin-bottom: 20px;
+            display: block; width: 100%; border-bottom: 1px solid #2a2a40; padding-bottom: 10px;
         }
-
-        .form-group {
-            display: flex;
-            align-items: center;
-            margin-bottom: 15px;
-            width: 100%; /* S'assure que la ligne prend toute la largeur dispo */
-        }
-
+        .form-group { display: flex; align-items: center; margin-bottom: 15px; width: 100%; }
         .form-group label {
-            width: 200px;
-            min-width: 200px; /* Garde la taille du label fixe */
-            text-align: right;
-            margin-right: 20px;
-            font-size: 0.95rem;
-            color: #ccc;
+            width: 200px; min-width: 200px; text-align: right; margin-right: 20px;
+            font-size: 0.95rem; color: #ccc;
         }
-
-        .form-group label.required::after {
-            content: " *";
-            color: #ff4d4d;
+        .form-group label.required::after { content: " *"; color: #ff4d4d; }
+        .input-wrapper { flex: 1; position: relative; }
+        input[type="text"], input[type="email"], input[type="password"], input[type="tel"], select {
+            width: 100%; padding: 12px; background-color: var(--input-bg); border: 1px solid #2a2a40;
+            border-radius: 5px; color: white; font-size: 1rem;
         }
-
-        .input-wrapper {
-            flex: 1; /* Remplit l'espace restant sans déborder */
-            position: relative;
-        }
-
-        input[type="text"],
-        input[type="email"],
-        input[type="password"],
-        input[type="tel"],
-        select {
-            width: 100%;
-            padding: 12px;
-            background-color: var(--input-bg);
-            border: 1px solid #2a2a40;
-            border-radius: 5px;
-            color: white;
-            font-size: 1rem;
-        }
-
-        input:focus, select:focus {
-            outline: none;
-            border-color: var(--uv-purple);
-            box-shadow: 0 0 5px rgba(168, 85, 247, 0.4);
-        }
-
-        .toggle-password {
-            position: absolute;
-            right: 12px;
-            top: 50%;
-            transform: translateY(-50%);
-            color: #666;
-            cursor: pointer;
-            z-index: 2;
-        }
-
-        .radio-group {
-            display: flex;
-            gap: 20px;
-            flex-wrap: wrap; /* Permet de passer à la ligne si besoin */
-        }
-
-        .radio-item {
-            display: flex;
-            align-items: center;
-        }
-
-        .radio-item input {
-            margin-right: 8px;
-            accent-color: var(--uv-purple);
-        }
-
-        .sub-note {
-            font-size: 0.8rem;
-            color: #888;
-            margin-left: 220px;
-            margin-top: -10px;
-            margin-bottom: 15px;
-        }
-
-        .checkbox-group {
-            margin-left: 220px;
-            margin-top: 20px;
-        }
-
-        .checkbox-item {
-            display: flex;
-            align-items: flex-start;
-            margin-bottom: 12px;
-            font-size: 0.9rem;
-            color: #ccc;
-        }
-
-        .checkbox-item input {
-            margin-right: 10px;
-            margin-top: 3px;
-            accent-color: var(--uv-purple);
-        }
-
-        .btn-submit-container {
-            text-align: center;
-            margin-top: 40px;
-        }
-
+        .toggle-password { position: absolute; right: 12px; top: 50%; transform: translateY(-50%); color: #666; cursor: pointer; }
+        .radio-group { display: flex; gap: 20px; flex-wrap: wrap; }
+        .radio-item { display: flex; align-items: center; }
+        .radio-item input { margin-right: 8px; accent-color: var(--uv-purple); }
+        .sub-note { font-size: 0.8rem; color: #888; margin-left: 220px; margin-top: -10px; margin-bottom: 15px; }
+        .checkbox-group { margin-left: 220px; margin-top: 20px; }
+        .checkbox-item { display: flex; align-items: flex-start; margin-bottom: 12px; font-size: 0.9rem; color: #ccc; }
+        .checkbox-item input { margin-right: 10px; margin-top: 3px; accent-color: var(--uv-purple); }
+        .btn-submit-container { text-align: center; margin-top: 40px; }
         .btn-submit {
-            background-color: var(--success-green);
-            color: white;
-            border: none;
-            padding: 15px 50px;
-            font-size: 1.2rem;
-            font-weight: bold;
-            border-radius: 5px;
-            cursor: pointer;
-            transition: 0.3s;
-            box-shadow: 0 4px 15px rgba(40, 167, 69, 0.3);
-            width: 100%; /* Bouton pleine largeur sur mobile, s'adapte sinon */
-            max-width: 300px;
+            background-color: var(--success-green); color: white; border: none;
+            padding: 15px 50px; font-size: 1.2rem; font-weight: bold; border-radius: 5px;
+            cursor: pointer; transition: 0.3s; width: 100%; max-width: 300px;
         }
-
-        .btn-submit:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 6px 20px rgba(40, 167, 69, 0.5);
-        }
-
-        /* Responsive : sur petit écran, on empile les éléments */
         @media (max-width: 600px) {
-            .form-group {
-                flex-direction: column;
-                align-items: flex-start;
-            }
-            .form-group label {
-                text-align: left;
-                margin-bottom: 5px;
-            }
-            .sub-note, .checkbox-group {
-                margin-left: 0;
-            }
+            .form-group { flex-direction: column; align-items: flex-start; }
+            .form-group label { text-align: left; margin-bottom: 5px; }
+            .sub-note, .checkbox-group { margin-left: 0; }
         }
     </style>
 </head>
@@ -220,29 +73,27 @@
         <h1 class="main-title">Création de compte</h1>
         <p class="required-note">* Champs obligatoires</p>
 
-        <form action="https://uv-pro-back.onrender.com/formulaire-inscription.php" method="POST"></form>
+        <form action="https://uv-pro-back.onrender.com/formulaire-inscription.php" method="POST">
             
             <fieldset>
-    <legend>Vos identifiants</legend>
-    <div class="form-group">
-        <label class="required">Email</label>
-        <div class="input-wrapper">
-            <input type="email" name="email" placeholder="votre@email.com" required>
-        </div>
-    </div>
-
-    <div class="form-group">
-        <label class="required">Mot de passe</label>
-        <div class="input-wrapper">
-            <input type="password" name="password" id="password" placeholder="••••••••" required>
-            <i class="fas fa-eye toggle-password" onclick="togglePassword()" style="cursor: pointer;"></i>
-        </div>
-    </div>
-</fieldset>
+                <legend>Vos identifiants</legend>
+                <div class="form-group">
+                    <label class="required">Email</label>
+                    <div class="input-wrapper">
+                        <input type="email" name="email" placeholder="votre@email.com" required>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="required">Mot de passe</label>
+                    <div class="input-wrapper">
+                        <input type="password" name="password" id="password" placeholder="••••••••" required>
+                        <i class="fas fa-eye toggle-password" onclick="togglePassword()"></i>
+                    </div>
+                </div>
+            </fieldset>
 
             <fieldset>
                 <legend>Votre identité</legend>
-                
                 <div class="form-group">
                     <label class="required">Civilité</label>
                     <div class="radio-group">
@@ -251,77 +102,41 @@
                         <label class="radio-item"><input type="radio" name="civilite" value="Societe"> Société/Établissement</label>
                     </div>
                 </div>
-
                 <div class="form-group">
                     <label class="required">Nom</label>
-                    <div class="input-wrapper">
-                        <input type="text" name="nom" required>
-                    </div>
+                    <div class="input-wrapper"><input type="text" name="nom" required></div>
                 </div>
-
                 <div class="form-group">
                     <label class="required">Prénom</label>
-                    <div class="input-wrapper">
-                        <input type="text" name="prenom" required>
-                    </div>
+                    <div class="input-wrapper"><input type="text" name="prenom" required></div>
                 </div>
-
                 <div class="form-group">
                     <label>Date de naissance</label>
                     <div class="input-wrapper">
-                        <input type="text" 
-                               name="date_naissance" 
-                               id="date_naissance"
-                               placeholder="JJ / MM / AAAA"
-                               maxlength="10"
-                               onkeyup="formatDate(this)">
+                        <input type="text" name="date_naissance" id="date_naissance" placeholder="JJ / MM / AAAA" maxlength="10" onkeyup="formatDate(this)">
                     </div>
                 </div>
                 <p class="sub-note">Une surprise vous attend le jour de votre anniversaire*</p>
-
                 <div class="form-group">
                     <label class="required">Téléphone (mobile ou fixe)</label>
-                    <div class="input-wrapper">
-                        <input type="tel" name="telephone" required>
-                    </div>
-                </div>
-
-                <div class="checkbox-group">
-                    <label class="checkbox-item">
-                        <input type="checkbox" name="newsletter" checked>
-                        <span>Bénéficiez d'offres exclusives et d'avant-premières</span>
-                    </label>
-                    <label class="checkbox-item">
-                        <input type="checkbox" name="catalogues">
-                        <span>Être informé par mail de la mise à disposition des prochains catalogues à télécharger</span>
-                    </label>
+                    <div class="input-wrapper"><input type="tel" name="telephone" required></div>
                 </div>
             </fieldset>
 
             <fieldset>
                 <legend>Votre adresse</legend>
-
                 <div class="form-group">
                     <label class="required">Numéro et nom de rue</label>
-                    <div class="input-wrapper">
-                        <input type="text" name="adresse" placeholder="ex: 6, rue de la nuée bleue" required>
-                    </div>
+                    <div class="input-wrapper"><input type="text" name="adresse" placeholder="ex: 6, rue de la nuée bleue" required></div>
                 </div>
-
                 <div class="form-group">
                     <label class="required">Code postal</label>
-                    <div class="input-wrapper">
-                        <input type="text" name="code_postal" required>
-                    </div>
+                    <div class="input-wrapper"><input type="text" name="code_postal" required></div>
                 </div>
-
                 <div class="form-group">
                     <label class="required">Ville</label>
-                    <div class="input-wrapper">
-                        <input type="text" name="ville" required>
-                    </div>
+                    <div class="input-wrapper"><input type="text" name="ville" required></div>
                 </div>
-
                 <div class="form-group">
                     <label class="required">Pays</label>
                     <div class="input-wrapper">
@@ -332,58 +147,42 @@
                         </select>
                     </div>
                 </div>
-
                 <div class="form-group">
                     <label>Complément du nom</label>
-                    <div class="input-wrapper">
-                        <input type="text" name="complement_nom" placeholder="ex: Chez monsieur Dupond">
-                    </div>
+                    <div class="input-wrapper"><input type="text" name="complement_nom" placeholder="ex: Chez monsieur Dupond"></div>
                 </div>
-
                 <div class="form-group">
                     <label>Nom de l'immeuble</label>
-                    <div class="input-wrapper">
-                        <input type="text" name="immeuble" placeholder="ex: Bâtiment des lilas">
-                    </div>
+                    <div class="input-wrapper"><input type="text" name="immeuble" placeholder="ex: Bâtiment des lilas"></div>
                 </div>
-
                 <div class="form-group">
-                    <label>Boite postale</label>
-                    <div class="input-wrapper">
-                        <input type="text" name="boite_postale" placeholder="ex: BP 432 MONTFERRIER">
-                    </div>
+                    <label>Boîte postale</label>
+                    <div class="input-wrapper"><input type="text" name="boite_postale" placeholder="ex: BP 432 MONTFERRIER"></div>
                 </div>
             </fieldset>
 
             <div class="btn-submit-container">
                 <button type="submit" class="btn-submit">Créer un compte</button>
             </div>
-
         </form>
     </div>
 
     <script>
-        // Fonction pour afficher/masquer le mot de passe
         function togglePassword() {
             const passwordInput = document.getElementById('password');
             const icon = document.querySelector('.toggle-password');
             if (passwordInput.type === 'password') {
                 passwordInput.type = 'text';
-                icon.classList.remove('fa-eye');
-                icon.classList.add('fa-eye-slash');
+                icon.classList.replace('fa-eye', 'fa-eye-slash');
             } else {
                 passwordInput.type = 'password';
-                icon.classList.remove('fa-eye-slash');
-                icon.classList.add('fa-eye');
+                icon.classList.replace('fa-eye-slash', 'fa-eye');
             }
         }
-
-        // Fonction pour formater la date automatiquement (JJ/MM/AAAA)
         function formatDate(input) {
             let v = input.value.replace(/\D/g, '').match(/(\d{0,2})(\d{0,2})(\d{0,4})/);
             input.value = !v[2] ? v[1] : v[1] + '/' + v[2] + (v[3] ? '/' + v[3] : '');
         }
     </script>
-    
 </body>
 </html>
