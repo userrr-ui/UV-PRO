@@ -283,26 +283,27 @@
         document.getElementById('btn-final-checkout').href = "validation-de-commande.html?total=" + newTotal;
     }
 
-    // --- GESTION DE LA SESSION (NOUVEAU) ---
+    // --- GESTION DE LA SESSION (MODIFIÉE) ---
     async function checkUserSession() {
         try {
-            const response = await fetch('https://uv-pro-back.onrender.com/get-session.php');
+            // L'ajout de credentials: 'include' est la clé pour envoyer les cookies à Render
+            const response = await fetch('https://uv-pro-back.onrender.com/get-session.php', {
+                credentials: 'include'
+            });
             const data = await response.json();
 
             if (data.loggedIn) {
-                // On affiche le nom
+                // Mise à jour du texte et de l'icône
                 document.getElementById('account-text').innerText = data.nom_affichage;
-                // On change le lien vers le profil
                 document.getElementById('nav-account-link').href = "https://uv-pro-back.onrender.com/mon-profil.php";
-                // On change la couleur de l'icône
                 document.getElementById('user-icon').style.color = "#a855f7";
             }
         } catch (error) {
-            console.log("Utilisateur non connecté");
+            console.error("Erreur lors de la récupération de la session:", error);
         }
     }
 
-    // Lancer la vérification au chargement
+    // Lancer au chargement
     window.addEventListener('DOMContentLoaded', checkUserSession);
 </script>
 
