@@ -205,7 +205,7 @@
     <a href="index.html" class="brand-logo">UV-PRO</a>
     
     <div class="nav-right">
-        <a href="https://uv-pro-back.onrender.com/connexion.php" class="nav-link" id="nav-account-link">
+        <a href="https://uv-pro-back.onrender.com/connexion.php?from=panier" class="nav-link" id="nav-account-link">
             <i class="fas fa-user" id="user-icon"></i> 
             <span id="account-text">Compte</span>
         </a>
@@ -262,7 +262,6 @@
 </div>
 
 <script>
-    // --- GESTION DU PANIER ---
     const unitPrice = 13.73;
     let currentQty = 1;
 
@@ -283,18 +282,16 @@
         document.getElementById('btn-final-checkout').href = "validation-de-commande.html?total=" + newTotal;
     }
 
-    // --- GESTION DE LA SESSION (MODIFIÉE) ---
     async function checkUserSession() {
         try {
-            // L'ajout de credentials: 'include' est la clé pour envoyer les cookies à Render
             const response = await fetch('https://uv-pro-back.onrender.com/get-session.php', {
                 credentials: 'include'
             });
             const data = await response.json();
 
             if (data.loggedIn) {
-                // Mise à jour du texte et de l'icône
                 document.getElementById('account-text').innerText = data.nom_affichage;
+                // Le lien pointera vers ton futur fichier de profil sur Render
                 document.getElementById('nav-account-link').href = "https://uv-pro-back.onrender.com/mon-profil.php";
                 document.getElementById('user-icon').style.color = "#a855f7";
             }
@@ -303,7 +300,6 @@
         }
     }
 
-    // Lancer au chargement
     window.addEventListener('DOMContentLoaded', checkUserSession);
 </script>
 
