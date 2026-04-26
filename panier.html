@@ -26,7 +26,7 @@
             padding: 0;
         }
 
-        /* --- BARRE DE NAVIGATION SUPÉRIEURE --- */
+        /* --- BARRE DE NAVIGATION --- */
         .top-nav {
             background-color: var(--nav-bg);
             height: 60px;
@@ -205,8 +205,9 @@
     <a href="index.html" class="brand-logo">UV-PRO</a>
     
     <div class="nav-right">
-        <a href="compte.html" class="nav-link">
-            <i class="fas fa-user"></i> Compte
+        <a href="https://uv-pro-back.onrender.com/connexion.php" class="nav-link" id="nav-account-link">
+            <i class="fas fa-user" id="user-icon"></i> 
+            <span id="account-text">Compte</span>
         </a>
         <a href="panier.html" class="nav-link">
             <div class="cart-wrapper">
@@ -261,6 +262,7 @@
 </div>
 
 <script>
+    // --- GESTION DU PANIER ---
     const unitPrice = 13.73;
     let currentQty = 1;
 
@@ -278,10 +280,30 @@
         document.getElementById('total-price').innerText = formattedTotal;
         document.getElementById('subtotal-right').innerText = formattedTotal;
 
-        // MISE À JOUR DU LIEN DE PAIEMENT
-        // On change le lien pour qu'il contienne le nouveau prix total
         document.getElementById('btn-final-checkout').href = "validation-de-commande.html?total=" + newTotal;
     }
+
+    // --- GESTION DE LA SESSION (NOUVEAU) ---
+    async function checkUserSession() {
+        try {
+            const response = await fetch('https://uv-pro-back.onrender.com/get-session.php');
+            const data = await response.json();
+
+            if (data.loggedIn) {
+                // On affiche le nom
+                document.getElementById('account-text').innerText = data.nom_affichage;
+                // On change le lien vers le profil
+                document.getElementById('nav-account-link').href = "https://uv-pro-back.onrender.com/mon-profil.php";
+                // On change la couleur de l'icône
+                document.getElementById('user-icon').style.color = "#a855f7";
+            }
+        } catch (error) {
+            console.log("Utilisateur non connecté");
+        }
+    }
+
+    // Lancer la vérification au chargement
+    window.addEventListener('DOMContentLoaded', checkUserSession);
 </script>
 
 </body>
