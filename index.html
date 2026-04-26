@@ -164,7 +164,7 @@
         <a href="index.html" class="logo">UV-PRO</a>
         
         <div class="nav-links">
-            <a href="https://uv-pro-back.onrender.com/connexion.php" id="nav-account-link">
+            <a href="https://uv-pro-back.onrender.com/connexion.php?from=index" id="nav-account-link">
                 <i class="fas fa-user" id="user-icon"></i> 
                 <span id="account-text">Compte</span>
             </a>
@@ -232,31 +232,30 @@
     </section>
 
     <script>
-        // --- NOUVELLE FONCTION DE VÉRIFICATION ---
+        // --- FONCTION DE VÉRIFICATION CORRIGÉE ---
         async function checkUserSession() {
             try {
-                // Appel au fichier get-session.php sur Render
-                const response = await fetch('https://uv-pro-back.onrender.com/get-session.php');
+                // Ajout de credentials: 'include' pour envoyer le cookie à Render
+                const response = await fetch('https://uv-pro-back.onrender.com/get-session.php', {
+                    credentials: 'include'
+                });
                 const data = await response.json();
 
-                // On vérifie si le serveur dit que l'utilisateur est connecté
                 if (data.loggedIn) {
-                    // On affiche le nom enregistré par connexion.php (user_nom)
+                    // Mise à jour du nom
                     document.getElementById('account-text').innerText = data.nom_affichage;
                     
-                    // On change le lien vers la future page profil
+                    // Lien vers la page profil sur Render
                     document.getElementById('nav-account-link').href = "https://uv-pro-back.onrender.com/mon-profil.php";
                     
-                    // On change la couleur de l'icône en violet UV pour signaler la connexion
+                    // Couleur de l'icône
                     document.getElementById('user-icon').style.color = "#a855f7";
                 }
             } catch (error) {
-                // Si pas connecté ou erreur, on laisse le bouton "Compte" par défaut
                 console.log("Session non détectée");
             }
         }
 
-        // Exécution automatique au chargement de la page
         window.addEventListener('DOMContentLoaded', checkUserSession);
 
         function addComment() {
@@ -265,6 +264,7 @@
                 const list = document.getElementById('commentsList');
                 const newComment = document.createElement('div');
                 newComment.className = 'review-card';
+                // Utilisation de Visiteur par défaut, on pourra le rendre dynamique plus tard
                 newComment.innerHTML = `<strong>Visiteur</strong><p>${commentText}</p>`;
                 list.prepend(newComment);
                 document.getElementById('userComment').value = "";
