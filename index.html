@@ -148,6 +148,7 @@
             border-radius: 5px;
             box-sizing: border-box;
             outline: none;
+            resize: vertical;
         }
 
         .review-card {
@@ -155,6 +156,12 @@
             padding: 15px;
             border-left: 4px solid var(--uv-purple);
             margin-bottom: 15px;
+            animation: fadeIn 0.5s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
         }
     </style>
 </head>
@@ -196,59 +203,39 @@
         </div>
     </main>
 
-    <section style="max-width: 1100px; margin: 0 auto; padding: 40px 20px;">
-        <h2 style="color: var(--uv-purple); border-bottom: 1px solid var(--border-color); padding-bottom: 10px;">Description détaillée</h2>
-        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 30px; margin-top: 20px;">
-            <div>
-                <h3>Pourquoi choisir notre lampe ?</h3>
-                <p style="color: #ccc; line-height: 1.6;">
-                    Notre lampe UV de haute précision utilise une longueur d'onde optimisée pour révéler ce qui est invisible à l'œil nu. 
-                </p>
-            </div>
-            <div style="background: var(--card-bg); padding: 20px; border-radius: 10px;">
-                <h3 style="margin-top: 0;">Fiche Technique</h3>
-                <ul style="list-style: none; padding: 0; color: #ccc;">
-                    <li style="margin-bottom: 10px;">⚡ <strong>Puissance :</strong> 5W haute intensité</li>
-                    <li style="margin-bottom: 10px;">🔍 <strong>Usage :</strong> Billets, hygiène, minéraux</li>
-                    <li style="margin-bottom: 10px;">🛡️ <strong>Matériau :</strong> Alliage d'aluminium</li>
-                </ul>
-            </div>
-        </div>
-    </section>
-
     <section class="reviews-section">
         <h3>Avis de nos clients</h3>
         <div class="comment-form">
             <p>Laissez un avis :</p>
             <textarea id="userComment" rows="3" placeholder="Votre commentaire..."></textarea>
-            <button class="btn-cart" style="margin-top:10px; width:auto;" onclick="addComment()">Publier</button>
+            <button class="btn-cart" id="btnPublish" style="margin-top:10px; width:auto;" onclick="addComment()">Publier</button>
         </div>
         <div id="commentsList">
-            <div class="review-card">
-                <strong>Jean Dupont</strong>
-                <p>Super efficace pour nettoyer ma salle de bain !</p>
-            </div>
+            <p style="text-align:center; color:#666;">Chargement des avis...</p>
         </div>
     </section>
 
     <script>
-        // --- FONCTION DE VÉRIFICATION CORRIGÉE ---
+        let isUserLoggedIn = false;
+
+        // --- CHARGEMENT INITIAL ---
+        window.addEventListener('DOMContentLoaded', () => {
+            checkUserSession();
+            loadComments();
+        });
+
+        // --- VÉRIFICATION SESSION ---
         async function checkUserSession() {
             try {
-                // Ajout de credentials: 'include' pour envoyer le cookie à Render
                 const response = await fetch('https://uv-pro-back.onrender.com/get-session.php', {
                     credentials: 'include'
                 });
                 const data = await response.json();
 
                 if (data.loggedIn) {
-                    // Mise à jour du nom
+                    isUserLoggedIn = true;
                     document.getElementById('account-text').innerText = data.nom_affichage;
-                    
-                    // Lien vers la page profil sur Render
                     document.getElementById('nav-account-link').href = "https://uv-pro-back.onrender.com/mon-profil.php";
-                    
-                    // Couleur de l'icône
                     document.getElementById('user-icon').style.color = "#a855f7";
                 }
             } catch (error) {
@@ -256,18 +243,69 @@
             }
         }
 
-        window.addEventListener('DOMContentLoaded', checkUserSession);
-
-        function addComment() {
-            const commentText = document.getElementById('userComment').value;
-            if(commentText.trim() !== "") {
+        // --- CHARGER LES AVIS DEPUIS LA BDD ---
+        async function loadComments() {
+            try {
+                const response = await fetch('https://uv-pro-back.onrender.com/poster-avis.php');
+                const avis = await response.json();
                 const list = document.getElementById('commentsList');
-                const newComment = document.createElement('div');
-                newComment.className = 'review-card';
-                // Utilisation de Visiteur par défaut, on pourra le rendre dynamique plus tard
-                newComment.innerHTML = `<strong>Visiteur</strong><p>${commentText}</p>`;
-                list.prepend(newComment);
-                document.getElementById('userComment').value = "";
+                list.innerHTML = "";
+
+                if (avis.length === 0) {
+                    list.innerHTML = "<p style='color:#666;'>Aucun avis pour le moment. Soyez le premier !</p>";
+                    return;
+                }
+
+                avis.forEach(item => {
+                    const card = document.createElement('div');
+                    card.className = 'review-card';
+                    card.innerHTML = `<strong>${item.nom_client}</strong><p>${item.commentaire}</p>`;
+                    list.appendChild(card);
+                });
+            } catch (error) {
+                document.getElementById('commentsList').innerHTML = "<p style='color:red;'>Erreur lors du chargement des avis.</p>";
+            }
+        }
+
+        // --- PUBLIER UN AVIS ---
+        async function addComment() {
+            // 1. Vérifier si connecté
+            if (!isUserLoggedIn) {
+                window.location.href = "https://uv-pro.vercel.app/compte.html";
+                return;
+            }
+
+            const commentText = document.getElementById('userComment').value;
+            const btn = document.getElementById('btnPublish');
+
+            if (commentText.trim() === "") return;
+
+            btn.disabled = true;
+            btn.innerText = "Publication...";
+
+            try {
+                const response = await fetch('https://uv-pro-back.onrender.com/poster-avis.php', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ commentaire: commentText }),
+                    credentials: 'include'
+                });
+
+                const result = await response.json();
+
+                if (result.success) {
+                    document.getElementById('userComment').value = "";
+                    loadComments(); // Recharger la liste
+                } else if (result.redirect) {
+                    window.location.href = "https://uv-pro.vercel.app/compte.html";
+                } else {
+                    alert("Erreur : " + result.message);
+                }
+            } catch (error) {
+                alert("Erreur de connexion au serveur.");
+            } finally {
+                btn.disabled = false;
+                btn.innerText = "Publier";
             }
         }
     </script>
