@@ -256,7 +256,7 @@
             <div style="margin-bottom:20px; color: white;">
                 Sous-total (<span id="qty-summary">1</span> article) : <strong id="subtotal-right">13,73 €</strong>
             </div>
-            <a href="validation-de-commande.html" id="btn-final-checkout" class="btn-checkout">Valider la commande</a>
+            <button onclick="handleCheckout()" id="btn-final-checkout" class="btn-checkout">Valider la commande</button>
         </div>
     </div>
 </div>
@@ -264,6 +264,7 @@
 <script>
     const unitPrice = 13.73;
     let currentQty = 1;
+    let isUserLoggedIn = false; // Variable pour suivre l'état de connexion
 
     function changeQty(amount) {
         currentQty += amount;
@@ -278,8 +279,17 @@
 
         document.getElementById('total-price').innerText = formattedTotal;
         document.getElementById('subtotal-right').innerText = formattedTotal;
+    }
 
-        document.getElementById('btn-final-checkout').href = "validation-de-commande.html?total=" + newTotal;
+    // Nouvelle fonction pour gérer la redirection du bouton valider
+    function handleCheckout() {
+        const total = (currentQty * unitPrice).toFixed(2);
+        if (isUserLoggedIn) {
+            window.location.href = "https://uv-pro.vercel.app/validation-de-commande.html?total=" + total;
+        } else {
+            // Redirection vers connexion.php avec le paramètre de provenance
+            window.location.href = "https://uv-pro-back.onrender.com/connexion.php?from=panier";
+        }
     }
 
     async function checkUserSession() {
@@ -290,8 +300,8 @@
             const data = await response.json();
 
             if (data.loggedIn) {
+                isUserLoggedIn = true; // Mise à jour de l'état
                 document.getElementById('account-text').innerText = data.nom_affichage;
-                // Le lien pointera vers ton futur fichier de profil sur Render
                 document.getElementById('nav-account-link').href = "https://uv-pro-back.onrender.com/mon-profil.php";
                 document.getElementById('user-icon').style.color = "#a855f7";
             }
